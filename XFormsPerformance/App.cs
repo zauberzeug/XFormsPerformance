@@ -19,8 +19,6 @@ namespace XFormsPerformance
         {
             Content = new Button {
                 Text = "Start",
-                VerticalOptions = LayoutOptions.CenterAndExpand,
-                HorizontalOptions = LayoutOptions.CenterAndExpand,
                 Command = new Command(o => {
                     App.StartTime = DateTime.Now;
                     Navigation.PushAsync(new StopPage());
@@ -33,16 +31,16 @@ namespace XFormsPerformance
     {
         public StopPage()
         {
-            Content = new Label {
-                Text = "Stop",
-            };
+            Content = new StackLayout();
+            for (var i = 0; i < 40; i++)
+                (Content as StackLayout).Children.Add(new Label{ Text = "Label " + i });
         }
 
         protected override void OnAppearing()
         {
+            ((Content as StackLayout).Children[0] as Label).Text = "Stop after " + (DateTime.Now - App.StartTime).TotalMilliseconds + " ms";
+        
             base.OnAppearing();
-
-            (Content as Label).Text += " after " + (DateTime.Now - App.StartTime).TotalMilliseconds + " ms";
         }
     }
 }
