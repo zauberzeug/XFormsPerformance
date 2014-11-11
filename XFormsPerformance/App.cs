@@ -13,33 +13,72 @@ namespace XFormsPerformance
         }
     }
 
+    public class QuickLabel : View
+    {
+        protected override SizeRequest OnSizeRequest(double widthConstraint, double heightConstraint)
+        {
+            return new SizeRequest(new Size(100, 20));
+        }
+
+        public string Text = "";
+    }
+
     public class StartPage : ContentPage
     {
         public StartPage()
         {
-            Content = new Button {
-                Text = "Start",
-                Command = new Command(o => {
-                    App.StartTime = DateTime.Now;
-                    Navigation.PushAsync(new StopPage());
-                }),
+            Content = new StackLayout {
+                Children = {
+                    new Button {
+                        Text = "Start Label Instanciation",
+                        Command = new Command(o => {
+                            App.StartTime = DateTime.Now;
+                            Navigation.PushAsync(new LabelStopPage());
+                        }),
+                    },
+                    new Button {
+                        Text = "Start QuickLabel Instanciation",
+                        Command = new Command(o => {
+                            App.StartTime = DateTime.Now;
+                            Navigation.PushAsync(new QuickLabelStopPage());
+                        }),
+                    },
+                }
             };
         }
     }
 
-    public class StopPage : ContentPage
+    public class LabelStopPage : ContentPage
     {
-        public StopPage()
+        public LabelStopPage()
         {
             Content = new StackLayout();
-            for (var i = 0; i < 40; i++)
+            for (var i = 0; i < 400; i++)
                 (Content as StackLayout).Children.Add(new Label{ Text = "Label " + i });
         }
 
         protected override void OnAppearing()
         {
-            ((Content as StackLayout).Children[0] as Label).Text = "Stop after " + (DateTime.Now - App.StartTime).TotalMilliseconds + " ms";
-        
+            var timingMessage = "Stop after " + (DateTime.Now - App.StartTime).TotalMilliseconds + " ms";
+            ((Content as StackLayout).Children [0] as Label).Text = timingMessage;
+            Console.WriteLine(timingMessage);
+            base.OnAppearing();
+        }
+    }
+
+    public class QuickLabelStopPage : ContentPage
+    {
+        public QuickLabelStopPage()
+        {
+            Content = new StackLayout();
+            for (var i = 0; i < 400; i++)
+                (Content as StackLayout).Children.Add(new QuickLabel{ Text = "Label " + i });
+        }
+
+        protected override void OnAppearing()
+        {
+            var timingMessage = "Stop after " + (DateTime.Now - App.StartTime).TotalMilliseconds + " ms";
+            Console.WriteLine(timingMessage);
             base.OnAppearing();
         }
     }
