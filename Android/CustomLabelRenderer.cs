@@ -3,7 +3,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using Android.Widget;
 
-[assembly: ExportRenderer(typeof(XFormsPerformance.QuickLabel), typeof(XFormsPerformance.Android.CustomLabelRenderer))]
+[assembly: ExportRenderer(typeof(XFormsPerformance.QuickerLabel), typeof(XFormsPerformance.Android.CustomLabelRenderer))]
 
 namespace XFormsPerformance.Android
 {
@@ -21,7 +21,7 @@ namespace XFormsPerformance.Android
             base.OnElementChanged(e);
             if (this.view == null) {
                 this.view = new TextView(base.Context);
-                view.Text = (Element as QuickLabel).Text;
+                view.Text = (Element as QuickerLabel).Text;
                 SetNativeControl(this.view);
             }
         }

@@ -37,7 +37,7 @@ namespace XFormsPerformance
                         }),
                     },
                     new Button {
-                        Text = "Start QuickLabel Instanciation",
+                        Text = "Start QuickerLabel Instanciation",
                         Command = new Command(o => {
                             App.StartTime = DateTime.Now;
                             Navigation.PushAsync(new StopPage(i => new QuickerLabel{ Text = "Label " + i }));
@@ -53,7 +53,7 @@ namespace XFormsPerformance
         public StopPage(Func<int, View> createLabel)
         {
             Content = new StackLayout();
-            for (var i = 0; i < 400; i++)
+            for (var i = 0; i < 40; i++)
                 (Content as StackLayout).Children.Add(createLabel(i));
         }
 
