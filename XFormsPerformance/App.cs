@@ -15,12 +15,12 @@ namespace XFormsPerformance
 
     public class QuickerLabel : View
     {
+        public string Text = "";
+
         protected override SizeRequest OnSizeRequest(double widthConstraint, double heightConstraint)
         {
             return new SizeRequest(new Size(100, 20));
         }
-
-        public string Text = "";
     }
 
     public class StartPage : ContentPage
