@@ -13,7 +13,7 @@ namespace XFormsPerformance
         }
     }
 
-    public class QuickLabel : View
+    public class QuickerLabel : View
     {
         protected override SizeRequest OnSizeRequest(double widthConstraint, double heightConstraint)
         {
@@ -33,14 +33,14 @@ namespace XFormsPerformance
                         Text = "Start Label Instanciation",
                         Command = new Command(o => {
                             App.StartTime = DateTime.Now;
-                            Navigation.PushAsync(new LabelStopPage());
+                            Navigation.PushAsync(new StopPage(i => new Label{ Text = "Label " + i }));
                         }),
                     },
                     new Button {
                         Text = "Start QuickLabel Instanciation",
                         Command = new Command(o => {
                             App.StartTime = DateTime.Now;
-                            Navigation.PushAsync(new QuickLabelStopPage());
+                            Navigation.PushAsync(new StopPage(i => new QuickerLabel{ Text = "Label " + i }));
                         }),
                     },
                 }
@@ -48,31 +48,13 @@ namespace XFormsPerformance
         }
     }
 
-    public class LabelStopPage : ContentPage
+    public class StopPage : ContentPage
     {
-        public LabelStopPage()
+        public StopPage(Func<int, View> createLabel)
         {
             Content = new StackLayout();
             for (var i = 0; i < 400; i++)
-                (Content as StackLayout).Children.Add(new Label{ Text = "Label " + i });
-        }
-
-        protected override void OnAppearing()
-        {
-            var timingMessage = "Stop after " + (DateTime.Now - App.StartTime).TotalMilliseconds + " ms";
-            ((Content as StackLayout).Children [0] as Label).Text = timingMessage;
-            Console.WriteLine(timingMessage);
-            base.OnAppearing();
-        }
-    }
-
-    public class QuickLabelStopPage : ContentPage
-    {
-        public QuickLabelStopPage()
-        {
-            Content = new StackLayout();
-            for (var i = 0; i < 400; i++)
-                (Content as StackLayout).Children.Add(new QuickLabel{ Text = "Label " + i });
+                (Content as StackLayout).Children.Add(createLabel(i));
         }
 
         protected override void OnAppearing()
