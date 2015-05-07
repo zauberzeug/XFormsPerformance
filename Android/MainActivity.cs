@@ -1,28 +1,21 @@
-﻿using System;
-
-using Android.App;
-using Android.Content;
+﻿using Android.App;
 using Android.Content.PM;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.OS;
-
 using Xamarin.Forms.Platform.Android;
-
+using Xamarin.Forms;
 
 namespace XFormsPerformance.Android
 {
     [Activity(Label = "XFormsPerformance.Android.Android", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
-    public class MainActivity : AndroidActivity
+    public class MainActivity : FormsApplicationActivity
     {
-        protected override void OnCreate(Bundle bundle)
+        protected override void OnCreate(Bundle savedInstanceState)
         {
-            base.OnCreate(bundle);
+            base.OnCreate(savedInstanceState);
 
-            Xamarin.Forms.Forms.Init(this, bundle);
+            Forms.Init(this, savedInstanceState);
 
-            SetPage(App.GetMainPage());
+            LoadApplication(new App());
         }
     }
 }

@@ -3,13 +3,13 @@ using Xamarin.Forms;
 
 namespace XFormsPerformance
 {
-    public static class App
+    public class App: Application
     {
         public static DateTime StartTime;
 
-        public static Page GetMainPage()
+        public App()
         {    
-            return new NavigationPage(new StartPage());
+            MainPage = new NavigationPage(new StartPage());
         }
     }
 
@@ -28,19 +28,34 @@ namespace XFormsPerformance
         public StartPage()
         {
             Content = new StackLayout {
+                HorizontalOptions = LayoutOptions.Start,
                 Children = {
                     new Button {
-                        Text = "Start Label Instanciation",
+                        Text = "Instantiate Labels in StackLayout",
                         Command = new Command(o => {
                             App.StartTime = DateTime.Now;
-                            Navigation.PushAsync(new StopPage(i => new Label{ Text = "Label " + i }));
+                            Navigation.PushAsync(new StopPage<StackLayout>(i => new Label{ Text = "Label " + i }));
                         }),
                     },
                     new Button {
-                        Text = "Start QuickerLabel Instanciation",
+                        Text = "Instantiate QuickerLabels in StackLayout",
                         Command = new Command(o => {
                             App.StartTime = DateTime.Now;
-                            Navigation.PushAsync(new StopPage(i => new QuickerLabel{ Text = "Label " + i }));
+                            Navigation.PushAsync(new StopPage<StackLayout>(i => new QuickerLabel{ Text = "Label " + i }));
+                        }),
+                    },
+                    new Button {
+                        Text = "Instantiate Labels in QuickStackLayout",
+                        Command = new Command(o => {
+                            App.StartTime = DateTime.Now;
+                            Navigation.PushAsync(new StopPage<QuickStackLayout>(i => new Label{ Text = "Label " + i }));
+                        }),
+                    },
+                    new Button {
+                        Text = "Instantiate QuickerLabels in QuickStackLayout",
+                        Command = new Command(o => {
+                            App.StartTime = DateTime.Now;
+                            Navigation.PushAsync(new StopPage<QuickStackLayout>(i => new QuickerLabel{ Text = "Label " + i }));
                         }),
                     },
                 }
@@ -48,19 +63,35 @@ namespace XFormsPerformance
         }
     }
 
-    public class StopPage : ContentPage
+    public class QuickStackLayout : StackLayout
+    {
+        protected override bool ShouldInvalidateOnChildAdded(View child)
+        {
+            return false;
+        }
+
+        protected override bool ShouldInvalidateOnChildRemoved(View child)
+        {
+            return false;
+        }
+
+        protected override void OnChildMeasureInvalidated()
+        {
+        }
+    }
+
+    public class StopPage<T> : ContentPage where T : StackLayout, new()
     {
         public StopPage(Func<int, View> createLabel)
         {
-            Content = new StackLayout();
-            for (var i = 0; i < 40; i++)
-                (Content as StackLayout).Children.Add(createLabel(i));
+            Content = new T();
+            for (var i = 0; i < 100; i++)
+                (Content as T).Children.Add(createLabel(i));
         }
 
         protected override void OnAppearing()
         {
-            var timingMessage = "Stop after " + (DateTime.Now - App.StartTime).TotalMilliseconds + " ms";
-            Console.WriteLine(timingMessage);
+            Console.WriteLine("Stop after " + (DateTime.Now - App.StartTime).TotalMilliseconds + " ms");
             base.OnAppearing();
         }
     }

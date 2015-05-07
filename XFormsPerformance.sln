@@ -52,7 +52,4 @@ Global
 		{BF931EC3-EB94-467C-986F-A55BA36DA89A}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
 		{BF931EC3-EB94-467C-986F-A55BA36DA89A}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
 	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Android\XFormsPerformance.Android.csproj
-	EndGlobalSection
 EndGlobal
